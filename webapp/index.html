@@ -25,55 +25,62 @@ Conexiones entrantes actualmente al servidor erp.idom.com desde cualquier parte 
   <body>
     <div id="map"></div>
     <script>
-      // initialize Leaflet
-      var map = L.map('map').setView({lon: 0, lat: 0}, 2);
+        // initialize Leaflet
+        // $(document).ready(function() {
+          
+          document.addEventListener("DOMContentLoaded", ready);
 
-      var greenIcon = new L.Icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
-      });
+          function ready(){
+  
+            var map = L.map('map').setView({lon: 0, lat: 0}, 2);
+            
+            // add the OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+              }).addTo(map);
 
-      var blueIcon = new L.Icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
-      });
+              L.control.scale().addTo(map);
+            
 
-      // add the OpenStreetMap tiles
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-      }).addTo(map);
+            var greenIcon = new L.Icon({
+              iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+            });
 
-      L.control.scale().addTo(map);
+            var blueIcon = new L.Icon({
+              iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+            });
 
-      var icon = greenIcon;
+            var icon = greenIcon;
 
-      $.ajax({
-         url: "/CurrentIps",
-         type: "GET",
-         
-         success: function(data) { 
-                                  for ( var i = 0 ;  i < data.conexiones.length; i ++){
-                                      if (data.conexiones[i]){
-                                        if (data.conexiones[i].Tipo === "Remoto" ){
-                                          icon = blueIcon;
-                                        } else {
-                                          icon = greenIcon;
-                                        }
-                                        L.marker({lon: data.conexiones[i].Longitud, lat:  data.conexiones[i].Latitud }, {icon: icon}).bindPopup(data.conexiones[i].ip
-                                        + ", " + data.conexiones[i].Tipo + " - " + data.conexiones[i].Pais + " " + data.conexiones[i].Codigo  ).addTo(map); }
-                                      }
-                                  }        
-         });
-      
+            $.ajax( {
+              url: "/CurrentIps",
+              type: "GET",
+              
+              success: function(data) { 
+                                        for ( var i = 0 ;  i < data.conexiones.length; i ++){
+                                            if (data.conexiones[i]){
+                                              if (data.conexiones[i].Tipo === "Remoto" ){
+                                                icon = blueIcon;
+                                              } else {
+                                                icon = greenIcon;
+                                              }
+                                              L.marker({lon: data.conexiones[i].Longitud, lat:  data.conexiones[i].Latitud }, {icon: icon}).bindPopup(data.conexiones[i].ip
+                                              + ", " + data.conexiones[i].Tipo + " - " + data.conexiones[i].Pais   ).addTo(map); }
+                                            }
+                                        }        //+ " " + data.conexiones[i].Codigo
+            });
+          };
     </script>
   </body>
 </html>

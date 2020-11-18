@@ -22,7 +22,7 @@ app.use(myParser.urlencoded({ extended: true }));
 
 var optionsICM = {
   'method': 'GET',
-  'url': 'http://sapwcprd.idom.wan/sap/wdisp/admin/icp/show_conns.icp',
+  'url': 'http://erp.idom.com/sap/wdisp/admin/icp/show_conns.icp',
   'headers': {
     'Authorization': 'Basic d2ViYWRtOklkb20yMDE3'
   }
@@ -66,7 +66,8 @@ app.get('/CurrentIps', function (req, res) {
   }
 
   const resolverLocalizacion = async (ip) => {
-    var urlGeo = 'https://api.ipgeolocationapi.com/geolocate/';
+    //var urlGeo = 'https://api.ipgeolocationapi.com/geolocate/';
+    var urlGeo = 'http://ip-api.com/json/';
     return new Promise(function(resolve, reject){
 
       request(urlGeo.concat(ip), function (error, response) {
@@ -74,11 +75,15 @@ app.get('/CurrentIps', function (req, res) {
 
         var configuracion = {
           "ip" : ip,
-          "Latitud": JSON.parse(response.body).geo.latitude,
-          "Longitud" : JSON.parse(response.body).geo.longitude,
+          //"Latitud": JSON.parse(response.body).geo.latitude,
+          //"Longitud" : JSON.parse(response.body).geo.longitude,
+          "Latitud": JSON.parse(response.body).lat,
+          "Longitud" : JSON.parse(response.body).lon,
           "Tipo": "Remoto",
-          "Pais": JSON.parse(response.body).name,
-          "Codigo" :JSON.parse(response.body).un_locode
+          //"Pais": JSON.parse(response.body).name,
+          "Pais": JSON.parse(response.body).country + " " + JSON.parse(response.body).city,
+          "Codigo" :JSON.parse(response.body).countryCode
+          //"Codigo" :JSON.parse(response.body).un_locode
         };
 
         resolve(configuracion);  
