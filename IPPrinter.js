@@ -24,7 +24,7 @@ var optionsICM = {
   'method': 'GET',
   'url': 'http://erp.idom.com/sap/wdisp/admin/icp/show_conns.icp',
   'headers': {
-    'Authorization': 'Basic d2ViYWRtOklkb20yMDE3'
+    'Authorization': 'Basis WHATEVER' //Put your web dispatcher Authorization string here
   }
 };
 
