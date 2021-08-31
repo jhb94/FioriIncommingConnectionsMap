@@ -22,7 +22,7 @@ app.use(myParser.urlencoded({ extended: true }));
 
 var optionsICM = {
   'method': 'GET',
-  'url': 'http://erp.idom.com/sap/wdisp/admin/icp/show_conns.icp',
+  'url': 'http://erp.COMPANYNAME.com/sap/wdisp/admin/icp/show_conns.icp',
   'headers': {
     'Authorization': 'Basic WHATEVER' //Put your web dispatcher Authorization string here
   }
